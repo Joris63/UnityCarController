@@ -11,13 +11,15 @@ public class CarController : MonoBehaviour
     [Tooltip("Auto assigns the car stats based on existing presets.")]
     public CarTypePreset carPreset = CarTypePreset.Custom;
 
-    [Header("Car Settings & References")]
+    [Header("General properties")]
     [Tooltip("Type of vehicle. Hover vehicles can only make use of raycast based suspension.")]
     public VehicleType vehicleType = VehicleType.GroundVehicle;
     [Tooltip("Type of suspension to use.")]
     public SuspensionType suspensionType = SuspensionType.Raycasts;
     [Tooltip("Center of Mass position.")]
     public Transform centerOfMass;
+
+    public DriveType driveType { get; set; }
 
 
     private void OnValidate()
@@ -29,7 +31,7 @@ public class CarController : MonoBehaviour
     }
 }
 
-/*
+
 #if UNITY_EDITOR
 [CustomEditor(typeof(CarController))]
 public class CarControllerEditor : Editor
@@ -38,19 +40,13 @@ public class CarControllerEditor : Editor
     {
         DrawDefaultInspector();
 
-        var myScript = target as DeformablePart;
+        var myScript = target as CarController;
 
-        if (myScript.isHinge)
+        if (myScript.vehicleType == VehicleType.GroundVehicle)
         {
-            GUILayout.Label("Hinge Properties:", EditorStyles.boldLabel);
-            myScript.health = EditorGUILayout.FloatField("Health", myScript.health);
-            myScript.hingeCreationThreshold = EditorGUILayout.FloatField("Hinge Creation Threshold", myScript.hingeCreationThreshold);
-            myScript.hingeAnchor = EditorGUILayout.Vector3Field("Anchor", myScript.hingeAnchor);
-            myScript.hingeAxis = EditorGUILayout.Vector3Field("Axis", myScript.hingeAxis);
-            myScript.hingeMinLimit = EditorGUILayout.FloatField("Min Limit", myScript.hingeMinLimit);
-            myScript.hingeMaxLimit = EditorGUILayout.FloatField("Max Limit", myScript.hingeMaxLimit);
+            myScript.driveType = (DriveType)EditorGUILayout.EnumPopup("Drive Type", myScript.driveType);
         }
     }
 }
 #endif
-*/
+
